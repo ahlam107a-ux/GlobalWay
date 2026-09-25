@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalWay | Modern Travel & Tour Booking</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%230EA5E9' d='M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z'/></svg>">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        [dir="rtl"] body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-teal-500 selection:text-white overflow-x-hidden">
+
+    <!-- Top Bar / Navbar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 group shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 smooth-transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <span class="text-xl sm:text-2xl font-black bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Global<span class="text-teal-500">Way</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-6 lg:gap-8 font-medium text-sm text-slate-600">
+                <a href="#destinations" data-i18n="nav_destinations" class="hover:text-teal-600 smooth-transition">Destinations</a>
+                <a href="#tours" data-i18n="nav_packages" class="hover:text-teal-600 smooth-transition">Tour Packages</a>
+                <a href="#features" data-i18n="nav_features" class="hover:text-teal-600 smooth-transition">Why Us</a>
+                <a href="#testimonials" data-i18n="nav_reviews" class="hover:text-teal-600 smooth-transition">Reviews</a>
+            </nav>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <select id="currencySelect" class="bg-slate-100 text-slate-700 text-xs sm:text-sm font-semibold py-1.5 sm:py-2 px-2 sm:px-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer">
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="EGP">EGP (E£)</option>
+                </select>
+
+                <button id="langToggle" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold px-3 py-1.5 sm:py-2 rounded-xl border border-slate-200 smooth-transition flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                    <span id="langLabel">AR</span>
+                </button>
+
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white border-b border-slate-100 shadow-xl py-6 px-6 flex flex-col gap-4">
+            <a href="#destinations" data-i18n="nav_destinations" class="mobile-link text-slate-700 font-medium py-2 border-b border-slate-50">Destinations</a>
+            <a href="#tours" data-i18n="nav_packages" class="mobile-link text-slate-700 font-medium py-2 border-b border-slate-50">Tour Packages</a>
+            <a href="#features" data-i18n="nav_features" class="mobile-link text-slate-700 font-medium py-2 border-b border-slate-50">Why Us</a>
+            <a href="#testimonials" data-i18n="nav_reviews" class="mobile-link text-slate-700 font-medium py-2">Reviews</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[85vh] flex items-center justify-center bg-slate-900 overflow-hidden py-16 px-4 sm:px-6">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80" alt="Travel Background" class="w-full h-full object-cover object-center opacity-40 scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center text-white w-full">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/20 border border-teal-500/30 text-teal-300 text-xs sm:text-sm font-semibold mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+                <span data-i18n="hero_badge">Explore the World with Premium Comfort</span>
+            </span>
+            <h1 class="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-tight mb-6" data-i18n="hero_title">
+                Discover Your Next <span class="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">Great Adventure</span>
+            </h1>
+            <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-normal px-2" data-i18n="hero_subtitle">
+                Curated luxury tours, hand-picked destinations, and seamless booking experience tailored just for you.
+            </p>
+
+            <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl shadow-2xl max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-slate-800 text-left" dir="ltr">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1" data-i18n="search_destination">Destination</label>
+                    <select id="quickDest" class="w-full bg-transparent font-semibold text-slate-800 text-sm focus:outline-none cursor-pointer">
+                        <option value="all">All Destinations</option>
+                        <option value="Europe">Europe</option>
+                        <option value="Asia">Asia</option>
+                        <option value="Middle East">Middle East</option>
+                    </select>
+                </div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1" data-i18n="search_date">Travel Date</label>
+                    <input type="date" id="quickDate" class="w-full bg-transparent font-semibold text-slate-800 text-sm focus:outline-none">
+                </div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1" data-i18n="search_guests">Guests</label>
+                    <select id="quickGuests" class="w-full bg-transparent font-semibold text-slate-800 text-sm focus:outline-none cursor-pointer">
+                        <option value="1">1 Guest</option>
+                        <option value="2" selected>2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4+ Guests</option>
+                    </select>
+                </div>
+                <div class="flex items-center">
+                    <button id="quickSearchBtn" class="w-full h-full min-h-[48px] bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-teal-500/30 smooth-transition flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <span data-i18n="search_btn">Search</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section id="destinations" class="py-16 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-12 gap-4">
+            <div>
+                <span class="text-teal-600 font-bold uppercase tracking-wider text-sm" data-i18n="dest_subtitle">Top Places</span>
+                <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mt-1" data-i18n="dest_title">Popular Destinations</h2>
+            </div>
+            <p class="text-slate-500 max-w-md text-sm sm:text-base" data-i18n="dest_desc">
+                Explore our most requested global hotspots hand-crafted for unforgettable memories.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Paris -->
+            <div class="group relative rounded-3xl overflow-hidden shadow-md hover:shadow-2xl smooth-transition bg-white border border-slate-100 flex flex-col">
+                <div class="relative h-64 sm:h-72 overflow-hidden bg-slate-200">
+                    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80" alt="Paris" class="w-full h-full object-cover group-hover:scale-110 smooth-transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md" data-i18n="badge_france">France</span>
+                    <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 class="text-xl sm:text-2xl font-bold" data-i18n="dest_paris">Paris, France</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm" data-i18n="dest_paris_sub">7 Days • Romantic Getaway</p>
+                    </div>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-slate-500 text-sm font-medium" data-i18n="starting_from">Starting from</span>
+                        <span class="text-xl sm:text-2xl font-black text-teal-600 price-tag" data-base-price="1200">$1,200</span>
+                    </div>
+                    <button onclick="openBookingModal('Paris Getaway', 1200, 'Europe')" class="w-full bg-slate-900 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-xl smooth-transition flex items-center justify-center gap-2">
+                        <span data-i18n="book_now">Book Now</span>
+                        <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tokyo -->
+            <div class="group relative rounded-3xl overflow-hidden shadow-md hover:shadow-2xl smooth-transition bg-white border border-slate-100 flex flex-col">
+                <div class="relative h-64 sm:h-72 overflow-hidden bg-slate-200">
+                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80" alt="Tokyo" class="w-full h-full object-cover group-hover:scale-110 smooth-transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md" data-i18n="badge_japan">Japan</span>
+                    <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 class="text-xl sm:text-2xl font-bold" data-i18n="dest_tokyo">Tokyo, Japan</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm" data-i18n="dest_tokyo_sub">10 Days • Cultural Discovery</p>
+                    </div>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-slate-500 text-sm font-medium" data-i18n="starting_from">Starting from</span>
+                        <span class="text-xl sm:text-2xl font-black text-teal-600 price-tag" data-base-price="2100">$2,100</span>
+                    </div>
+                    <button onclick="openBookingModal('Tokyo Discovery', 2100, 'Asia')" class="w-full bg-slate-900 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-xl smooth-transition flex items-center justify-center gap-2">
+                        <span data-i18n="book_now">Book Now</span>
+                        <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dubai -->
+            <div class="group relative rounded-3xl overflow-hidden shadow-md hover:shadow-2xl smooth-transition bg-white border border-slate-100 flex flex-col">
+                <div class="relative h-64 sm:h-72 overflow-hidden bg-slate-200">
+                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80" alt="Dubai" class="w-full h-full object-cover group-hover:scale-110 smooth-transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md" data-i18n="badge_uae">UAE</span>
+                    <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 class="text-xl sm:text-2xl font-bold" data-i18n="dest_dubai">Dubai, UAE</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm" data-i18n="dest_dubai_sub">5 Days • Luxury & Desert</p>
+                    </div>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-slate-500 text-sm font-medium" data-i18n="starting_from">Starting from</span>
+                        <span class="text-xl sm:text-2xl font-black text-teal-600 price-tag" data-base-price="950">$950</span>
+                    </div>
+                    <button onclick="openBookingModal('Dubai Luxury Escape', 950, 'Middle East')" class="w-full bg-slate-900 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-xl smooth-transition flex items-center justify-center gap-2">
+                        <span data-i18n="book_now">Book Now</span>
+                        <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tour Packages -->
+    <section id="tours" class="py-16 sm:py-20 bg-slate-100 border-y border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+                <span class="text-teal-600 font-bold uppercase tracking-wider text-sm" data-i18n="packages_subtitle">Special Packages</span>
+                <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mt-1" data-i18n="packages_title">Tailored Tour Packages</h2>
+                <p class="text-slate-500 mt-2 text-sm sm:text-base" data-i18n="packages_desc">Filter by category or price range to find your ideal vacation.</p>
+            </div>
+
+            <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 mb-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 w-full lg:w-auto" id="filterPills">
+                    <button data-filter="all" class="filter-pill px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-teal-500 text-white shadow-md shadow-teal-500/20 smooth-transition" data-i18n="filter_all">All Tours</button>
+                    <button data-filter="Europe" class="filter-pill px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 smooth-transition" data-i18n="filter_europe">Europe</button>
+                    <button data-filter="Asia" class="filter-pill px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 smooth-transition" data-i18n="filter_asia">Asia</button>
+                    <button data-filter="Middle East" class="filter-pill px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 smooth-transition" data-i18n="filter_middle_east">Middle East</button>
+                </div>
+
+                <div class="flex items-center gap-4 w-full lg:w-72 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <span class="text-xs font-bold text-slate-500 whitespace-nowrap" data-i18n="max_price">Max Price:</span>
+                    <input type="range" id="priceRange" min="500" max="3000" step="100" value="3000" class="w-full accent-teal-500 cursor-pointer">
+                    <span id="priceVal" class="text-sm font-black text-teal-600 whitespace-nowrap">$3000</span>
+                </div>
+            </div>
+
+            <div id="tourGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Why Us -->
+    <section id="features" class="py-16 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <span class="text-teal-600 font-bold uppercase tracking-wider text-sm" data-i18n="features_subtitle">Why Choose Us</span>
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mt-1" data-i18n="features_title">Experience Seamless Travel</h2>
+            <p class="text-slate-500 mt-2 text-sm sm:text-base" data-i18n="features_desc">We ensure your journey is comfortable, safe, and memorable from start to finish.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl smooth-transition text-center group">
+                <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-teal-500 group-hover:text-white smooth-transition shadow-inner">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3" data-i18n="feat_1_title">Secure Booking Guarantee</h3>
+                <p class="text-slate-500 text-sm leading-relaxed" data-i18n="feat_1_desc">Encrypted transactions and reliable booking confirmations with 24/7 client support.</p>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl smooth-transition text-center group">
+                <div class="w-16 h-16 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-cyan-500 group-hover:text-white smooth-transition shadow-inner">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3" data-i18n="feat_2_title">Hand-Picked Tour Guides</h3>
+                <p class="text-slate-500 text-sm leading-relaxed" data-i18n="feat_2_desc">Professional local guides providing immersive cultural experiences and insider access.</p>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl smooth-transition text-center group">
+                <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-teal-500 group-hover:text-white smooth-transition shadow-inner">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3" data-i18n="feat_3_title">Best Price Promise</h3>
+                <p class="text-slate-500 text-sm leading-relaxed" data-i18n="feat_3_desc">Unmatched luxury packages at transparent rates with zero hidden fees or unexpected charges.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-16 sm:py-20 bg-slate-900 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+                <span class="text-teal-400 font-bold uppercase tracking-wider text-sm" data-i18n="testi_subtitle">Client Reviews</span>
+                <h2 class="text-2xl sm:text-4xl font-black mt-1" data-i18n="testi_title">What Travelers Say</h2>
+                <p class="text-slate-400 mt-2 text-sm sm:text-base" data-i18n="testi_desc">Real stories from travelers who experienced the world with GlobalWay.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                <div class="bg-slate-800/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-700/60 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6" data-i18n="testi_1_text">"The Paris getaway was flawlessly organized from flights to hotel bookings. GlobalWay exceeded every expectation!"</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Sarah J." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-white text-sm sm:text-base">Sarah Jenkins</h4>
+                            <p class="text-xs text-teal-400">Travel Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-700/60 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6" data-i18n="testi_2_text">"Booking the Tokyo cultural package was seamless. The local guide was extremely knowledgeable and polite."</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="David M." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-white text-sm sm:text-base">David Miller</h4>
+                            <p class="text-xs text-teal-400">Photographer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-700/60 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6" data-i18n="testi_3_text">"Dubai luxury escape was a dream come true! Incredible desert safari and instant reservation confirmation."</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Amina K." class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-white text-sm sm:text-base">Amina Khaled</h4>
+                            <p class="text-xs text-teal-400">Business Analyst</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 sm:py-16 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 mb-12">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center text-white font-bold">G</div>
+                    <span class="text-xl font-black text-white">Global<span class="text-teal-500">Way</span></span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed" data-i18n="footer_desc">
+                    Your premier gateway to luxury travel experiences worldwide. Explore with comfort and confidence.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider" data-i18n="footer_links">Quick Links</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#destinations" class="hover:text-teal-400 smooth-transition" data-i18n="nav_destinations">Destinations</a></li>
+                    <li><a href="#tours" class="hover:text-teal-400 smooth-transition" data-i18n="nav_packages">Tour Packages</a></li>
+                    <li><a href="#features" class="hover:text-teal-400 smooth-transition" data-i18n="nav_features">Why Us</a></li>
+                    <li><a href="#testimonials" class="hover:text-teal-400 smooth-transition" data-i18n="nav_reviews">Reviews</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider" data-i18n="footer_regions">Regions</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-teal-400 smooth-transition" data-i18n="reg_europe">Europe & Scandinavia</a></li>
+                    <li><a href="#" class="hover:text-teal-400 smooth-transition" data-i18n="reg_asia">East Asia & Japan</a></li>
+                    <li><a href="#" class="hover:text-teal-400 smooth-transition" data-i18n="reg_me">Middle East & UAE</a></li>
+                    <li><a href="#" class="hover:text-teal-400 smooth-transition" data-i18n="reg_americas">Americas & Caribbean</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider" data-i18n="footer_newsletter">Newsletter</h4>
+                <p class="text-xs text-slate-500 mb-3" data-i18n="newsletter_desc">Subscribe to receive secret travel deals and exclusive discounts.</p>
+                <form onsubmit="event.preventDefault(); alert('Subscribed successfully!');" class="flex gap-2">
+                    <input type="email" required placeholder="Enter email..." class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500 w-full">
+                    <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-4 py-2 rounded-xl text-xs smooth-transition" data-i18n="btn_join">Join</button>
+                </form>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-900 text-center text-xs text-slate-600" data-i18n="copyright">
+            &copy; 2026 GlobalWay Travel Inc. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative my-auto max-h-[90vh] overflow-y-auto">
+            <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-2 rounded-full bg-slate-100 smooth-transition z-10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="mb-6 pr-8">
+                <span id="modalTourCategory" class="text-xs font-bold text-teal-600 uppercase tracking-wider">Europe Tour</span>
+                <h3 id="modalTourTitle" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Book Tour Package</h3>
+                <p class="text-xs text-slate-500 mt-1">Complete the steps below to confirm your luxury reservation securely.</p>
+            </div>
+
+            <!-- Steps Indicator -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 text-xs font-bold">
+                <div id="stepIndicator1" class="flex items-center gap-2 text-teal-600">
+                    <span class="w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center shrink-0">1</span>
+                    <span class="hidden sm:inline">Traveler Info</span>
+                </div>
+                <div class="w-8 sm:w-12 h-0.5 bg-slate-200"></div>
+                <div id="stepIndicator2" class="flex items-center gap-2 text-slate-400">
+                    <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0">2</span>
+                    <span class="hidden sm:inline">Secure Payment</span>
+                </div>
+            </div>
+
+            <form id="bookingForm" onsubmit="event.preventDefault();">
+                <!-- Step 1 -->
+                <div id="bookingStep1" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name (First & Last)</label>
+                        <input type="text" id="travelerName" required placeholder="e.g. Ahmed Mohamed" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                        <span id="nameError" class="text-xs text-rose-500 hidden mt-1">Please enter a valid full name (at least two words).</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address</label>
+                            <input type="email" id="travelerEmail" required placeholder="name@example.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                            <span id="emailError" class="text-xs text-rose-500 hidden mt-1">Please enter a valid email address.</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number</label>
+                            <input type="tel" id="travelerPhone" required placeholder="+20 1012345678" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                            <span id="phoneError" class="text-xs text-rose-500 hidden mt-1">Please enter a valid phone number format.</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Number of Guests</label>
+                            <input type="number" id="guestCountInput" min="1" max="10" value="1" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-bold text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Departure Date</label>
+                            <input type="date" id="bookingDateInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 font-semibold text-slate-800">
+                            <span id="dateError" class="text-xs text-rose-500 hidden mt-1">Please select a valid future date.</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-teal-50 border border-teal-100 rounded-2xl p-4 flex items-center justify-between mt-6">
+                        <div>
+                            <span class="text-xs text-teal-700 font-bold block">Total Calculation</span>
+                            <span class="text-xs text-slate-500">Includes taxes & guide fees</span>
+                        </div>
+                        <span id="modalTotalPrice" class="text-xl sm:text-2xl font-black text-teal-600">$1,200</span>
+                    </div>
+
+                    <button type="button" onclick="validateStep1()" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-teal-500/20 smooth-transition mt-4 flex items-center justify-center gap-2">
+                        <span>Proceed to Payment</span>
+                        <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="bookingStep2" class="space-y-4 hidden">
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500">Amount to Pay</span>
+                        <span id="paymentTotalDisplay" class="text-lg font-black text-teal-600">$1,200</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Cardholder Name</label>
+                        <input type="text" id="cardName" required placeholder="Name on Card" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Card Number (16 Digits)</label>
+                        <input type="text" id="cardNumber" required maxlength="19" placeholder="4532 •••• •••• 8890" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                        <span id="cardError" class="text-xs text-rose-500 hidden mt-1">Please enter a valid 16-digit card number.</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Expiry (MM/YY)</label>
+                            <input type="text" id="cardExpiry" required maxlength="5" placeholder="MM/YY" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                            <span id="expiryError" class="text-xs text-rose-500 hidden mt-1">Invalid expiry format (MM/YY).</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">CVV Code</label>
+                            <input type="password" id="cardCvv" required maxlength="4" placeholder="123" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500">
+                            <span id="cvvError" class="text-xs text-rose-500 hidden mt-1">Invalid CVV (3-4 digits).</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-6">
+                        <button type="button" onclick="goToStep1()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-4 rounded-xl smooth-transition">Back</button>
+                        <button type="button" onclick="validateAndCompleteBooking()" class="w-2/3 bg-teal-500 hover:bg-teal-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-teal-500/20 smooth-transition flex items-center justify-center gap-2">
+                            <span>Confirm & Pay</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Success State -->
+                <div id="bookingSuccessState" class="hidden text-center py-6 sm:py-8 space-y-4">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto shadow-inner animate-bounce">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-900">Booking Confirmed Successfully!</h3>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">Thank you! Your reservation has been securely processed. Reference ID: <span id="bookingRefId" class="font-mono font-bold text-teal-600">GW-84920</span></p>
+                    <div class="pt-4">
+                        <button type="button" onclick="closeBookingModal()" class="bg-slate-900 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-xl smooth-transition">Done</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const translations = {
+            en: {
+                nav_destinations: "Destinations",
+                nav_packages: "Tour Packages",
+                nav_features: "Why Us",
+                nav_reviews: "Reviews",
+                hero_badge: "Explore the World with Premium Comfort",
+                hero_title: "Discover Your Next <span class='bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent'>Great Adventure</span>",
+                hero_subtitle: "Curated luxury tours, hand-picked destinations, and seamless booking experience tailored just for you.",
+                search_destination: "Destination",
+                search_date: "Travel Date",
+                search_guests: "Guests",
+                search_btn: "Search",
+                dest_subtitle: "Top Places",
+                dest_title: "Popular Destinations",
+                dest_desc: "Explore our most requested global hotspots hand-crafted for unforgettable memories.",
+                badge_france: "France",
+                badge_japan: "Japan",
+                badge_uae: "UAE",
+                dest_paris: "Paris, France",
+                dest_paris_sub: "7 Days • Romantic Getaway",
+                dest_tokyo: "Tokyo, Japan",
+                dest_tokyo_sub: "10 Days • Cultural Discovery",
+                dest_dubai: "Dubai, UAE",
+                dest_dubai_sub: "5 Days • Luxury & Desert",
+                starting_from: "Starting from",
+                book_now: "Book Now",
+                packages_subtitle: "Special Packages",
+                packages_title: "Tailored Tour Packages",
+                packages_desc: "Filter by category or price range to find your ideal vacation.",
+                filter_all: "All Tours",
+                filter_europe: "Europe",
+                filter_asia: "Asia",
+                filter_middle_east: "Middle East",
+                max_price: "Max Price:",
+                features_subtitle: "Why Choose Us",
+                features_title: "Experience Seamless Travel",
+                features_desc: "We ensure your journey is comfortable, safe, and memorable from start to finish.",
+                feat_1_title: "Secure Booking Guarantee",
+                feat_1_desc: "Encrypted transactions and reliable booking confirmations with 24/7 client support.",
+                feat_2_title: "Hand-Picked Tour Guides",
+                feat_2_desc: "Professional local guides providing immersive cultural experiences and insider access.",
+                feat_3_title: "Best Price Promise",
+                feat_3_desc: "Unmatched luxury packages at transparent rates with zero hidden fees or unexpected charges.",
+                testi_subtitle: "Client Reviews",
+                testi_title: "What Travelers Say",
+                testi_desc: "Real stories from travelers who experienced the world with GlobalWay.",
+                testi_1_text: "\"The Paris getaway was flawlessly organized from flights to hotel bookings. GlobalWay exceeded every expectation!\"",
+                testi_2_text: "\"Booking the Tokyo cultural package was seamless. The local guide was extremely knowledgeable and polite.\"",
+                testi_3_text: "\"Dubai luxury escape was a dream come true! Incredible desert safari and instant reservation confirmation.\"",
+                footer_desc: "Your premier gateway to luxury travel experiences worldwide. Explore with comfort and confidence.",
+                footer_links: "Quick Links",
+                footer_regions: "Regions",
+                footer_newsletter: "Newsletter",
+                newsletter_desc: "Subscribe to receive secret travel deals and exclusive discounts.",
+                reg_europe: "Europe & Scandinavia",
+                reg_asia: "East Asia & Japan",
+                reg_me: "Middle East & UAE",
+                reg_americas: "Americas & Caribbean",
+                btn_join: "Join",
+                copyright: "&copy; 2026 GlobalWay Travel Inc. All rights reserved."
+            },
+            ar: {
+                nav_destinations: "الوجهات",
+                nav_packages: "الباقات السياحية",
+                nav_features: "لماذا نحن",
+                nav_reviews: "التقييمات",
+                hero_badge: "استكشف العالم براحة فائقة",
+                hero_title: "اكتشف مغامرتك القادمة <span class='bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent'>بأفضل الأسعار</span>",
+                hero_subtitle: "جولات سياحية فاخرة ومنتقاة بعناية، ووجهات ساحرة وتجربة حجز سلسة مصممة خصيصاً لك.",
+                search_destination: "الوجهة",
+                search_date: "تاريخ السفر",
+                search_guests: "الضيوف",
+                search_btn: "بحث",
+                dest_subtitle: "أبرز الأماكن",
+                dest_title: "الوجهات الشهيرة",
+                dest_desc: "استكشف أهم الوجهات العالمية المطلوبة لضمان ذكريات لا تُنسى.",
+                badge_france: "فرنسا",
+                badge_japan: "اليابان",
+                badge_uae: "الإمارات",
+                dest_paris: "باريس، فرنسا",
+                dest_paris_sub: "7 أيام • رحلة رومانسية",
+                dest_tokyo: "طوكيو، اليابان",
+                dest_tokyo_sub: "10 أيام • استكشاف ثقافي",
+                dest_dubai: "دبي، الإمارات",
+                dest_dubai_sub: "5 أيام • فخامة وسفاري",
+                starting_from: "يبدأ من",
+                book_now: "احجز الآن",
+                packages_subtitle: "باقات مميزة",
+                packages_title: "باقات سياحية مخصصة",
+                packages_desc: "قم بالتصفية حسب الفئة أو نطاق السعر للعثور على عطلتك المثالية.",
+                filter_all: "جميع الجولات",
+                filter_europe: "أوروبا",
+                filter_asia: "آسيا",
+                filter_middle_east: "الشرق الأوسط",
+                max_price: "الحد الأقصى للسعر:",
+                features_subtitle: "لماذا تختارنا",
+                features_title: "تجربة سفر سلسة وآمنة",
+                features_desc: "نضمن لك رحلة مريحة وآمنة ولا تنسى من البداية وحتى النهاية.",
+                feat_1_title: "ضمان حجز آمن",
+                feat_1_desc: "معاملات مشفرة وتأكيدات حجز موثوقة مع دعم فني متواصل طوال اليوم.",
+                feat_2_title: "مرشدون سياحيون معتمدون",
+                feat_2_desc: "مرشدون محليون محترفون يقدمون تجارب ثقافية غامرة واستكشافاً واقعياً.",
+                feat_3_title: "وعد بأفضل سعر",
+                feat_3_desc: "باقات فاخرة لا تُنافس بأسعار شفافة وبدون أي رسوم خفية أو مفاجئة.",
+                testi_subtitle: "آراء العملاء",
+                testi_title: "ماذا يقول المسافرون",
+                testi_desc: "قصص حقيقية من مسافرين جربوا العالم رفقة GlobalWay.",
+                testi_1_text: "\"كانت رحلة باريس منظمة بشكل مذهل من رحلات الطيران وحتى الفنادق. لقد تجاوزت GlobalWay كل التوقعات!\"",
+                testi_2_text: "\"كان حجز باقة طوكيو الثقافية سلساً للغاية. المرشد المحلي كان ملماً بالتفاصيل ومهذباً للغاية.\"",
+                testi_3_text: "\"كانت رحلة دبي الفاخرة حلماً تحقّق! سفاري صحراوي لا يُنسى وتأكيد حجز فوري وسريع.\"",
+                footer_desc: "بوابتك الأولى لتجارب السفر الفاخرة حول العالم. استكشف بثقة وراحة.",
+                footer_links: "روابط سريعة",
+                footer_regions: "المناطق",
+                footer_newsletter: "النشرة البريدية",
+                newsletter_desc: "اشترك لتصلك عروض السفر السرية والخصومات الحصرية.",
+                reg_europe: "أوروبا وإسكندنافيا",
+                reg_asia: "شرق آسيا واليابان",
+                reg_me: "الشرق الأوسط والإمارات",
+                reg_americas: "الأمريكتين والكاريبي",
+                btn_join: "انضمام",
+                copyright: "&copy; 2026 GlobalWay Travel Inc. جميع الحقوق محفوظة."
+            }
+        };
+
+        const toursData = [
+            { id: 1, titleEn: "Swiss Alps Adventure", titleAr: "مغامرة جبال الألب السويسرية", category: "Europe", price: 1500, daysEn: "8 Days", daysAr: "8 أيام", image: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80" },
+            { id: 2, titleEn: "Kyoto Heritage Tour", titleAr: "جولة تراث مدينة كيوتو", category: "Asia", price: 1850, daysEn: "7 Days", daysAr: "7 أيام", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80" },
+            { id: 3, titleEn: "Istanbul Cultural Escape", titleAr: "رحلة ثقافية إلى إسطنبول", category: "Middle East", price: 850, daysEn: "5 Days", daysAr: "5 أيام", image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80" },
+            { id: 4, titleEn: "Amalfi Coast Retreat", titleAr: "استجمام ساحل أمالفي", category: "Europe", price: 1600, daysEn: "6 Days", daysAr: "6 أيام", image: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80" },
+            { id: 5, titleEn: "Bali Tropical Paradise", titleAr: "جنة جزيرة بالي الاستوائية", category: "Asia", price: 1100, daysEn: "9 Days", daysAr: "9 أيام", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80" },
+            { id: 6, titleEn: "Giza Pyramids & Cairo Expedition", titleAr: "رحلة أهرامات الجيزة والقاهرة", category: "Middle East", price: 820, daysEn: "5 Days", daysAr: "5 أيام", image: "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=80" }
+        ];
+
+        let currentLang = 'en';
+        let currentCurrency = 'USD';
+        let currencyRates = { USD: 1, EUR: 0.92, EGP: 48.5 };
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('quickDate').min = todayStr;
+        document.getElementById('quickDate').value = todayStr;
+        document.getElementById('bookingDateInput').min = todayStr;
+        document.getElementById('bookingDateInput').value = todayStr;
+
+        const langToggleBtn = document.getElementById('langToggle');
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('langLabel').textContent = currentLang === 'en' ? 'AR' : 'EN';
+            updateTranslations();
+            renderTours();
+        });
+
+        function updateTranslations() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        const currencySelect = document.getElementById('currencySelect');
+        currencySelect.addEventListener('change', (e) => {
+            currentCurrency = e.target.value;
+            updatePrices();
+        });
+
+        function formatPrice(usdPrice) {
+            const rate = currencyRates[currentCurrency];
+            const converted = Math.round(usdPrice * rate);
+            if (currentCurrency === 'USD') return `$${converted.toLocaleString()}`;
+            if (currentCurrency === 'EUR') return `€${converted.toLocaleString()}`;
+            if (currentCurrency === 'EGP') return `E£${converted.toLocaleString()}`;
+        }
+
+        function updatePrices() {
+            document.querySelectorAll('.price-tag').forEach(tag => {
+                const base = parseFloat(tag.getAttribute('data-base-price'));
+                tag.textContent = formatPrice(base);
+            });
+        }
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        let activeCategory = 'all';
+        let maxPriceFilter = 3000;
+
+        function renderTours() {
+            const grid = document.getElementById('tourGrid');
+            const filtered = toursData.filter(tour => {
+                const matchCat = activeCategory === 'all' || tour.category === activeCategory;
+                const matchPrice = tour.price <= maxPriceFilter;
+                return matchCat && matchPrice;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 font-medium">${currentLang === 'ar' ? 'لا توجد جولات مطابقة لمعايير البحث.' : 'No tours found matching your filter criteria.'}</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(tour => {
+                const title = currentLang === 'ar' ? tour.titleAr : tour.titleEn;
+                const days = currentLang === 'ar' ? tour.daysAr : tour.daysEn;
+                const catName = currentLang === 'ar' ? 
+                    (tour.category === 'Europe' ? 'أوروبا' : tour.category === 'Asia' ? 'آسيا' : 'الشرق الأوسط') : tour.category;
+
+                return `
+                    <div class="group relative rounded-3xl overflow-hidden shadow-md hover:shadow-2xl smooth-transition bg-white border border-slate-100 flex flex-col">
+                        <div class="relative h-64 sm:h-72 overflow-hidden bg-slate-200">
+                            <img src="${tour.image}" alt="${title}" class="w-full h-full object-cover group-hover:scale-110 smooth-transition duration-700" loading="lazy">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                            <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md">${catName}</span>
+                            <div class="absolute bottom-4 left-4 right-4 text-white">
+                                <h3 class="text-lg sm:text-xl font-bold leading-snug">${title}</h3>
+                                <p class="text-slate-300 text-xs sm:text-sm mt-0.5">${days} • ${currentLang === 'ar' ? 'رحلة مرشدة' : 'Guided Expedition'}</p>
+                            </div>
+                        </div>
+                        <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-slate-500 text-sm font-medium">${currentLang === 'ar' ? 'يبدأ من' : 'Starting from'}</span>
+                                <span class="text-xl sm:text-2xl font-black text-teal-600 price-tag" data-base-price="${tour.price}">${formatPrice(tour.price)}</span>
+                            </div>
+                            <button onclick="openBookingModal('${tour.titleEn}', ${tour.price}, '${tour.category}')" class="w-full bg-slate-900 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-xl smooth-transition flex items-center justify-center gap-2">
+                                <span>${currentLang === 'ar' ? 'احجز الآن' : 'Book Now'}</span>
+                                <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-pill').forEach(b => {
+                    b.classList.remove('bg-teal-500', 'text-white', 'shadow-md', 'shadow-teal-500/20');
+                    b.classList.add('bg-slate-100', 'text-slate-600');
+                });
+                e.target.classList.remove('bg-slate-100', 'text-slate-600');
+                e.target.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'shadow-teal-500/20');
+                activeCategory = e.target.getAttribute('data-filter');
+                renderTours();
+            });
+        });
+
+        const priceRange = document.getElementById('priceRange');
+        const priceVal = document.getElementById('priceVal');
+        priceRange.addEventListener('input', (e) => {
+            maxPriceFilter = parseInt(e.target.value);
+            priceVal.textContent = `$${maxPriceFilter}`;
+            renderTours();
+        });
+
+        document.getElementById('quickSearchBtn').addEventListener('click', () => {
+            const dest = document.getElementById('quickDest').value;
+            activeCategory = dest;
+            document.querySelectorAll('.filter-pill').forEach(b => {
+                if (b.getAttribute('data-filter') === dest) {
+                    b.click();
+                }
+            });
+            document.getElementById('tours').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        let selectedTourBasePrice = 1200;
+
+        function openBookingModal(tourName, basePrice, category) {
+            selectedTourBasePrice = basePrice;
+            document.getElementById('modalTourTitle').textContent = tourName;
+            document.getElementById('modalTourCategory').textContent = category;
+            
+            document.getElementById('bookingForm').reset();
+            document.getElementById('bookingDateInput').value = todayStr;
+            document.getElementById('guestCountInput').value = 1;
+            
+            document.getElementById('bookingStep1').classList.remove('hidden');
+            document.getElementById('bookingStep2').classList.add('hidden');
+            document.getElementById('bookingSuccessState').classList.add('hidden');
+            
+            document.getElementById('stepIndicator1').className = "flex items-center gap-2 text-teal-600";
+            document.getElementById('stepIndicator1').children[0].className = "w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center shrink-0";
+            document.getElementById('stepIndicator2').className = "flex items-center gap-2 text-slate-400";
+            document.getElementById('stepIndicator2').children[0].className = "w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0";
+
+            updateModalTotal();
+            document.getElementById('bookingModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        const guestCountInput = document.getElementById('guestCountInput');
+        guestCountInput.addEventListener('input', updateModalTotal);
+
+        function updateModalTotal() {
+            const guests = parseInt(guestCountInput.value) || 1;
+            const total = selectedTourBasePrice * guests;
+            const formatted = formatPrice(total);
+            document.getElementById('modalTotalPrice').textContent = formatted;
+            document.getElementById('paymentTotalDisplay').textContent = formatted;
+        }
+
+        function validateStep1() {
+            const name = document.getElementById('travelerName').value.trim();
+            const email = document.getElementById('travelerEmail').value.trim();
+            const phone = document.getElementById('travelerPhone').value.trim();
+            const date = document.getElementById('bookingDateInput').value;
+
+            let isValid = true;
+            const nameParts = name.split(/\s+/);
+            if (nameParts.length < 2 || name.length < 4) {
+                document.getElementById('nameError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.add('hidden');
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').classList.add('hidden');
+            }
+
+            const phoneRegex = /^[\d\+\-\s\(\)]{8,20}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').classList.add('hidden');
+            }
+
+            if (!date || date < todayStr) {
+                document.getElementById('dateError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('dateError').classList.add('hidden');
+            }
+
+            if (isValid) {
+                document.getElementById('bookingStep1').classList.add('hidden');
+                document.getElementById('bookingStep2').classList.remove('hidden');
+                
+                document.getElementById('stepIndicator1').className = "flex items-center gap-2 text-slate-400";
+                document.getElementById('stepIndicator1').children[0].className = "w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0";
+                document.getElementById('stepIndicator2').className = "flex items-center gap-2 text-teal-600";
+                document.getElementById('stepIndicator2').children[0].className = "w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center shrink-0";
+            }
+        }
+
+        function goToStep1() {
+            document.getElementById('bookingStep2').classList.add('hidden');
+            document.getElementById('bookingStep1').classList.remove('hidden');
+            
+            document.getElementById('stepIndicator2').className = "flex items-center gap-2 text-slate-400";
+            document.getElementById('stepIndicator2').children[0].className = "w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shrink-0";
+            document.getElementById('stepIndicator1').className = "flex items-center gap-2 text-teal-600";
+            document.getElementById('stepIndicator1').children[0].className = "w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center shrink-0";
+        }
+
+        function validateAndCompleteBooking() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
+            const cardExpiry = document.getElementById('cardExpiry').value.trim();
+            const cardCvv = document.getElementById('cardCvv').value.trim();
+
+            let isValid = true;
+            const cardRegex = /^\d{16}$/;
+            if (!cardRegex.test(cardNumber)) {
+                document.getElementById('cardError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('cardError').classList.add('hidden');
+            }
+
+            const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            if (!expiryRegex.test(cardExpiry)) {
+                document.getElementById('expiryError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('expiryError').classList.add('hidden');
+            }
+
+            const cvvRegex = /^\d{3,4}$/;
+            if (!cvvRegex.test(cardCvv)) {
+                document.getElementById('cvvError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('cvvError').classList.add('hidden');
+            }
+
+            if (isValid) {
+                const randomId = 'GW-' + Math.floor(10000 + Math.random() * 90000);
+                document.getElementById('bookingRefId').textContent = randomId;
+
+                document.getElementById('bookingStep2').classList.add('hidden');
+                document.getElementById('bookingSuccessState').classList.remove('hidden');
+            }
+        }
+
+        renderTours();
+    </script>
+</body>
+</html>
